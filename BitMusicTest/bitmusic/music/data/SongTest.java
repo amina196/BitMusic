@@ -49,40 +49,22 @@ public class SongTest {
     public void testAddComment() {
         System.out.println("addComment");
         Comment comment = new Comment("Amina", "comment text");
-        LinkedList listTag = new LinkedList<String>();
-        listTag.add(new String("tag1"));
-        listTag.add(new String("tag2"));
-        Song instance = new Song("1", "titre", "artiste", "album", listTag);
+        Song instance = new Song("1", "titre", "artiste", "album", "1", new LinkedList<String>());
         instance.addComment(comment);
         // TODO review the generated test code and remove the default call to fail.
-        assertEquals(instance.getComments().get(1),comment.getComment());
+        assertEquals(instance.getComments().get(0).getComment(),comment.getComment());
     }
-
-    /**
-     * Test of deleteComment method, of class Song.
-     */
-    @Test
-    public void testDeleteComment() {
-        System.out.println("deleteComment");
-        String authorId = "";
-        Date date = null;
-        Song instance = null;
-        instance.deleteComment(authorId, date);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
     /**
      * Test of addGrade method, of class Song.
      */
     @Test
     public void testAddGrade() {
         System.out.println("addGrade");
-        Grade grade = null;
-        Song instance = null;
+        Grade grade = new Grade("Amina", 10);
+        Song instance = new Song("1", "titre", "artiste", "album", "1",new LinkedList<String>());
         instance.addGrade(grade);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(instance.getGrades().get(new String("Amina")).getGrade(), 10);
     }
 
     /**
@@ -91,11 +73,14 @@ public class SongTest {
     @Test
     public void testDeleteGrade() {
         System.out.println("deleteGrade");
-        String authorId = "";
-        Song instance = null;
-        instance.deleteGrade(authorId);
+        String authorId = "Simo";
+        Grade grade = new Grade("Simo", 10);
+        Song instance = new Song("1", "titre", "artiste", "album", "1", new LinkedList<String>());
+        instance.addGrade(grade);
+        instance.deleteGrade("Simo");
+        assertNull(instance.getGrades().get(new String("Simo")));
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+      
     }
 
     /**
@@ -104,12 +89,17 @@ public class SongTest {
     @Test
     public void testUpdateCategory() {
         System.out.println("updateCategory");
-        String categoryName = "";
-        Rights rights = null;
-        Song instance = null;
-        instance.updateCategory(categoryName, rights);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        String categoryName = "categorie1";
+        HashMap<String,Rights> rightsbycatg = new HashMap<String, Rights>();
+        rightsbycatg.put(categoryName, new Rights());
+        Song instance = new Song("1", "titre", "artiste", "album", "1", new LinkedList<String>(), rightsbycatg);
+        instance.updateCategory(categoryName, new Rights(false,false,false,false));
+        
+        assertFalse(instance.getRightsByCategory().get(categoryName).getcanComment());
+        assertFalse(instance.getRightsByCategory().get(categoryName).getcanPlay());
+        assertFalse(instance.getRightsByCategory().get(categoryName).getcanRate());
+        assertFalse(instance.getRightsByCategory().get(categoryName).getcanReadInfo());
+        
     }
 
     /**
@@ -118,11 +108,15 @@ public class SongTest {
     @Test
     public void testDeleteCategory() {
         System.out.println("deleteCategory");
-        String categoryName = "";
-        Song instance = null;
+        
+        String categoryName = "categorie1";
+        HashMap<String,Rights> rightsbycatg = new HashMap<String, Rights>();
+        rightsbycatg.put(categoryName, new Rights());
+        Song instance = new Song("1", "titre", "artiste", "album", "1", new LinkedList<String>(), rightsbycatg);
+        
         instance.deleteCategory(categoryName);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        assertNull(instance.getRightsByCategory().get(categoryName));
     }
 
     /**
@@ -131,12 +125,11 @@ public class SongTest {
     @Test
     public void testGetSongId() {
         System.out.println("getSongId");
-        Song instance = null;
-        String expResult = "";
+        Song instance = new Song("1", "titre", "artiste", "album", "1", new LinkedList<String>());;
+        String expResult = "1";
         String result = instance.getSongId();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
 
     /**
@@ -145,12 +138,12 @@ public class SongTest {
     @Test
     public void testGetTitle() {
         System.out.println("getTitle");
-        Song instance = null;
-        String expResult = "";
+        Song instance = new Song("1", "titre", "artiste", "album", "1", new LinkedList<String>());
+        String expResult = "titre";
         String result = instance.getTitle();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        
     }
 
     /**
@@ -159,11 +152,11 @@ public class SongTest {
     @Test
     public void testSetTitle() {
         System.out.println("setTitle");
-        String title = "";
-        Song instance = null;
+        String title = "new Title";
+         Song instance = new Song("1", "titre", "artiste", "album", "1", new LinkedList<String>());
         instance.setTitle(title);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+       
+        assertEquals(instance.getTitle(),title);
     }
 
     /**
@@ -172,12 +165,11 @@ public class SongTest {
     @Test
     public void testGetArtist() {
         System.out.println("getArtist");
-        Song instance = null;
-        String expResult = "";
+        Song instance = new Song("1", "titre", "artiste", "album", "1", new LinkedList<String>());
+        String expResult = "artiste";
         String result = instance.getArtist();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -186,12 +178,10 @@ public class SongTest {
     @Test
     public void testGetAlbum() {
         System.out.println("getAlbum");
-        Song instance = null;
-        String expResult = "";
+        Song instance = new Song("1", "titre", "artiste", "album", "1", new LinkedList<String>());
+        String expResult = "album";
         String result = instance.getAlbum();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -200,12 +190,10 @@ public class SongTest {
     @Test
     public void testGetTags() {
         System.out.println("getTags");
-        Song instance = null;
-        LinkedList<String> expResult = null;
-        LinkedList<String> result = instance.getTags();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        LinkedList<String> listTags = new LinkedList<String>();
+        listTags.add("myTag");
+        Song instance = new Song("1", "titre", "artiste", "album", "1", listTags);   
+        assertTrue(instance.getTags().contains(new String("myTag")));
     }
 
     /**
@@ -214,12 +202,12 @@ public class SongTest {
     @Test
     public void testGetComments() {
         System.out.println("getComments");
-        Song instance = null;
-        LinkedList<Comment> expResult = null;
-        LinkedList<Comment> result = instance.getComments();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Comment comment = new Comment("Amina", "comment text");
+        Song instance = new Song("1", "titre", "artiste", "album", "1", new LinkedList<String>());
+        instance.addComment(comment);
+     
+        assertEquals(instance.getComments().get(0).getComment(),"comment text");
+        assertEquals(instance.getComments().get(0).getAuthor(),"Amina");
     }
 
     /**
@@ -228,12 +216,14 @@ public class SongTest {
     @Test
     public void testGetGrades() {
         System.out.println("getGrades");
-        Song instance = null;
-        HashMap<String, Grade> expResult = null;
-        HashMap<String, Grade> result = instance.getGrades();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        Grade grade = new Grade("1", 10);
+        Song instance = new Song("1", "titre", "artiste", "album", "1",new LinkedList<String>());
+        instance.addGrade(grade);
+        
+       
+        //assertEquals(instance.getGrades().get(0).getAuthorId(),"1");
+        
     }
 
     /**
@@ -241,13 +231,10 @@ public class SongTest {
      */
     @Test
     public void testGetOwnerId() {
-        System.out.println("getOwnerId");
-        Song instance = null;
-        String expResult = "";
+        Song instance = new Song("1", "titre", "artiste", "album", "1", new LinkedList<String>());
+        String expResult = "1";
         String result = instance.getOwnerId();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -255,13 +242,12 @@ public class SongTest {
      */
     @Test
     public void testGetLocalRights() {
-        System.out.println("getLocalRights");
-        Song instance = null;
-        Rights expResult = null;
+       
+        Song instance = new Song("1", "titre", "Amina", "album", "1", new LinkedList<String>(), new HashMap<String,Rights>());
+        Rights expResult = new Rights(true, false, true, false);
         Rights result = instance.getLocalRights();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertFalse(expResult.equals(result));
+        
     }
 
     /**
@@ -269,13 +255,12 @@ public class SongTest {
      */
     @Test
     public void testGetRightsByCategory() {
-        System.out.println("getRightsByCategory");
-        Song instance = null;
-        HashMap<String, Rights> expResult = null;
+        HashMap<String,Rights> rightsByCat = new HashMap<String,Rights>();
+        rightsByCat.put("family", new Rights(true,true,false,false));
+        rightsByCat.put("friends", new Rights(true,true,true,false));
+        Song instance = new Song("1", "titre", "Amina", "album", "1", new LinkedList<String>(), rightsByCat);
         HashMap<String, Rights> result = instance.getRightsByCategory();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertTrue(result.containsKey("family"));
     }
 
     /**
@@ -283,14 +268,15 @@ public class SongTest {
      */
     @Test
     public void testHasTag() {
-        System.out.println("hasTag");
-        List<String> tagList = null;
-        Song instance = null;
-        boolean expResult = false;
-        boolean result = instance.hasTag(tagList);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        LinkedList<String> listTags = new LinkedList<String>();
+        listTags.add("myTag2");
+        listTags.add("myTag3");
+        Song instance = new Song("1", "titre", "artiste", "album", "1", listTags);
+        LinkedList<String> searchTags = new LinkedList<>();
+        searchTags.add("myTag1");
+        searchTags.add("myTag4");
+        boolean result = instance.hasTag(searchTags);
+        assertFalse(result);
     }
     
 }
